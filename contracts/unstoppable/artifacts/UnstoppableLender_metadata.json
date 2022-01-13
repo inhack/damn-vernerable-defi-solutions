@@ -1,0 +1,127 @@
+{
+	"compiler": {
+		"version": "0.8.7+commit.e28d00a7"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "tokenAddress",
+						"type": "address"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [],
+				"name": "damnValuableToken",
+				"outputs": [
+					{
+						"internalType": "contract IERC20",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "depositTokens",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "borrowAmount",
+						"type": "uint256"
+					}
+				],
+				"name": "flashLoan",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "poolBalance",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"author": "Damn Vulnerable DeFi (https://damnvulnerabledefi.xyz)",
+			"kind": "dev",
+			"methods": {},
+			"title": "UnstoppableLender",
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"Desktop/Ethereum/CTF/damn-vulnerable-defi/contracts/unstoppable/UnstoppableLender.sol": "UnstoppableLender"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"@openzeppelin/contracts/security/ReentrancyGuard.sol": {
+			"keccak256": "0x86ebc6cea2b539c2d4a79a4754f7c90c43c45c9aaf0aab32ecffb1565afc5e0b",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://1d8016f7e49bd65a14769d2c846a7e589603e51c4bf82da94315cc59f54fe2e4",
+				"dweb:/ipfs/Qmd92BAbMLEbYYfRWwN1yqDTxEuguenmQ35YFbPh3KEFuP"
+			]
+		},
+		"@openzeppelin/contracts/token/ERC20/IERC20.sol": {
+			"keccak256": "0xc1452b054778f1926419196ef12ae200758a4ee728df69ae1cd13e5c16ca7df7",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://4cb252ec7657ba7a91be688cbd263090aa5379e504f488a62d06198e0d630322",
+				"dweb:/ipfs/QmW56fDiDirhWfWiKrycXE5UY6tTNtFrYx39ipnSs8mkYb"
+			]
+		},
+		"Desktop/Ethereum/CTF/damn-vulnerable-defi/contracts/unstoppable/UnstoppableLender.sol": {
+			"keccak256": "0xe428990f67695378fc25c36e41f4c364f896b91841afd09d88a257ca6dde5d29",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://26f603bba41228659ae9e681ab70f380784231c06682c6bbfb09281ccaddb73d",
+				"dweb:/ipfs/QmajrvXNkTFTn4aZhFf2SaChVhm1KSt9diE3qzVENzvZhM"
+			]
+		}
+	},
+	"version": 1
+}
