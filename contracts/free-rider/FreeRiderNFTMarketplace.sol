@@ -31,6 +31,12 @@ contract FreeRiderNFTMarketplace is ReentrancyGuard {
         }        
     }
 
+    /**
+     * @notice 여러 개의 NFT를 offer 등록을 위한 기능
+     * @param tokenIds offer할 토큰 ID 리스트
+     * @param prices offer 가격 리스트
+     * @dev 내부적으로 private _offerOne()을 호출하여 실제 offer 등록을 수행
+     */
     function offerMany(uint256[] calldata tokenIds, uint256[] calldata prices) external nonReentrant {
         require(tokenIds.length > 0 && tokenIds.length == prices.length);
         for (uint256 i = 0; i < tokenIds.length; i++) {
@@ -59,6 +65,11 @@ contract FreeRiderNFTMarketplace is ReentrancyGuard {
         emit NFTOffered(msg.sender, tokenId, price);
     }
 
+    /**
+     * @notice 여러 개의 NFT 구매를 위한 기능, 구매 가격은 입력하지않고, offer시의 가격대로 구매를 수행
+     * @param tokenIds 구매할 토큰 ID 리스트
+     * @dev 내부적으로 private _buyOne()을 호출하여 실제 구매 수행
+     */
     function buyMany(uint256[] calldata tokenIds) external payable nonReentrant {
         for (uint256 i = 0; i < tokenIds.length; i++) {
             _buyOne(tokenIds[i]);
@@ -73,11 +84,14 @@ contract FreeRiderNFTMarketplace is ReentrancyGuard {
 
         amountOfOffers--;
 
+        // Vulnerability : NFT를 safeTransferFrom(token.ownerOf(tokenId))로 보내면, 해당 NFT 토큰의 owner가 새 buyer로 바뀐다
+        //                 그 이후에 token.ownerOf(tokenId).sendValue() 호출 시 지불금액이 seller가 아닌 buyer에게 다시 돌아감!
+
         // transfer from seller to buyer
         token.safeTransferFrom(token.ownerOf(tokenId), msg.sender, tokenId);
 
         // pay seller
-        payable(token.ownerOf(tokenId)).sendValue(priceToPay);
+        payable(token.ownerOf(tokenId)).sendValue(priceToPay);      // vulnerable
 
         emit NFTBought(msg.sender, tokenId, priceToPay);
     }    

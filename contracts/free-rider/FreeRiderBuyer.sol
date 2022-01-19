@@ -18,6 +18,11 @@ contract FreeRiderBuyer is ReentrancyGuard, IERC721Receiver {
     uint256 private constant JOB_PAYOUT = 45 ether;
     uint256 private received;
 
+    /**
+     * @notice 
+     * @param _partner 컨트랙트의 오너가 소유권 approve할 대상 파트너 주소
+     * @param _nft 소유권 approve할 대상 자산(NFT)
+     */
     constructor(address _partner, address _nft) payable {
         require(msg.value == JOB_PAYOUT);
         partner = _partner;
@@ -26,6 +31,8 @@ contract FreeRiderBuyer is ReentrancyGuard, IERC721Receiver {
     }
 
     // Read https://eips.ethereum.org/EIPS/eip-721 for more info on this function
+    // * safeTransferFrom() -> _checkOnERC721Received() -> 리시버의 onERC721Received() 호출
+    // * buyer가 NFT 토큰을 수신할 때 마다 호출되며, 6개를 모두 받을 시 attacker에게 PAYOUT(45 ETH) 지급
     function onERC721Received(
         address,
         address,
