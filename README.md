@@ -24,8 +24,8 @@ My Article : [Solution Article](https://inhack.github.io/posts/solution-damn-vul
 
 ~~challenge #9 - Puppet v2~~
 
-challenge #10 - Free rider
+~~challenge #10 - Free rider~~
 
-challenge #11 - Backdoor
+~~challenge #11 - Backdoor~~
 
-challenge #12 - Climber
+~~challenge #12 - Climber~~

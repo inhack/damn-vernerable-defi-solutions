@@ -58,6 +58,8 @@ contract WalletRegistry is IProxyCreationCallback, Ownable {
      @notice Function executed when user creates a Gnosis Safe wallet via GnosisSafeProxyFactory::createProxyWithCallback
              setting the registry's address as the callback.
      */
+    // GnosisSafeProxyFactory::createProxyWithCallback()를 호출하여 Gnosis Safe wallet을 생성할 때 호출
+    // 4번째 인자인 callback의 주소에 proxyCreated()가 구현된 컨트랙트의 주소 전달 - WalletRegistry()
     function proxyCreated(
         GnosisSafeProxy proxy,
         address singleton,
@@ -74,7 +76,7 @@ contract WalletRegistry is IProxyCreationCallback, Ownable {
         require(singleton == masterCopy, "Fake mastercopy used");
         
         // Ensure initial calldata was a call to `GnosisSafe::setup`
-        require(bytes4(initializer[:4]) == GnosisSafe.setup.selector, "Wrong initialization");
+        require(bytes4(initializer[:4]) == GnosisSafe.setup.selector, "Wrong initialization");  // initialzer는 setup() 호출만 가능
 
         // Ensure wallet initialization is the expected
         require(GnosisSafe(walletAddress).getThreshold() == MAX_THRESHOLD, "Invalid threshold");

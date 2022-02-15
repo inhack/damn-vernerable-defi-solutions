@@ -43,7 +43,7 @@ contract ClimberTimelock is AccessControl {
 
         // deployer + self administration
         _setupRole(ADMIN_ROLE, admin);
-        _setupRole(ADMIN_ROLE, address(this));
+        _setupRole(ADMIN_ROLE, address(this));          // this contract has admin role
 
         _setupRole(PROPOSER_ROLE, proposer);
     }
@@ -76,7 +76,7 @@ contract ClimberTimelock is AccessControl {
         uint256[] calldata values,
         bytes[] calldata dataElements,
         bytes32 salt
-    ) external onlyRole(PROPOSER_ROLE) {
+    ) external onlyRole(PROPOSER_ROLE) {        // only PROPOSER can add operations.
         require(targets.length > 0 && targets.length < 256);
         require(targets.length == values.length);
         require(targets.length == dataElements.length);
@@ -101,10 +101,13 @@ contract ClimberTimelock is AccessControl {
 
         bytes32 id = getOperationId(targets, values, dataElements, salt);
 
+        // Vulnerable! Execute -> Validation Check
+        // (1) Execute operation
         for (uint8 i = 0; i < targets.length; i++) {
-            targets[i].functionCallWithValue(dataElements[i], values[i]);
+            targets[i].functionCallWithValue(dataElements[i], values[i]);       // attacker -> updateDelay, grantRole, transferOwnership, *schedule*
         }
         
+        // (2) Check that executed operation is valid
         require(getOperationState(id) == OperationState.ReadyForExecution);
         operations[id].executed = true;
     }
